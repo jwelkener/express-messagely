@@ -81,6 +81,20 @@ router.get("/:username/from", ensureCorrectUser, async function (req, res, next)
   }
 });
 
+/** Route to get current user's profile information */
+router.get("/profile", ensureLoggedIn, async function (req, res, next) {
+  try {
+    // Get the current user's username from the request object
+    const username = req.user.username;
 
+    // Fetch the profile information of the current user
+    const userProfile = await User.get(username);
+
+    // Respond with the user's profile information
+    return res.json({ userProfile });
+  } catch (err) {
+    return next(err);
+  }
+});
 
 module.exports = router;
